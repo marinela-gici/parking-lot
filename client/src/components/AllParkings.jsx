@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import ViewMap from './ViewMap.jsx'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
 const AllParkings = () => {
