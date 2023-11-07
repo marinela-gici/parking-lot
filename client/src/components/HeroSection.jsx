@@ -5,8 +5,6 @@ const HeroSection = () => {
     return (
         <>
             <div style={{backgroundImage: `url(${background})`}} className="relative min-h-[calc(100vh-80px)] bg-cover">
-
-
                 <div className="w-full text-center absolute top-[50%] translate-y-[-50%]">
                   <p className="text-4xl md:text-6xl text-white font-bold">BOOK CAR PARKING SPACE</p>
                     <p className="text-3xl md:text-4xl text-white py-4">Safe and secure facilities for your vehicle!</p>

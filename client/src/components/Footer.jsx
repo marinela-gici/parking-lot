@@ -104,7 +104,7 @@ const Footer = () => {
                 <div className="w-full p-4 text-center">
                     © 2023 Copyright:
                     <a className="text-neutral-900hite" href="#"
-                    > ParkingALot</a
+                    > ParkALot</a
                     >
                 </div>
             </footer>

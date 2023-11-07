@@ -6,16 +6,16 @@ const Navbar = () => {
     const [showNav, setShowNav] = useState(false);
 
     const navigation = [
-        {'name': 'Home', 'href': '#'},
+        {'name': 'Home', 'href': '/'},
         {'name': 'Reserve', 'href': '#'},
-        {'name': 'Locations', 'href': '#'},
+        {'name': 'Locations', 'href': '/locations'},
         {'name': 'Prices', 'href': '#'},
-        {'name': 'Login', 'href': '#'},
+        {'name': 'Login', 'href': '/login'},
     ]
     return (
         <>
                 <nav className="bg-white border-gray-200">
-                    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                    <div className="relative max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                         <a href="#" className="flex items-center">
                             <img src={logo} className="h-12 mr-3" alt="Logo" />
                             <span className="self-center text-2xl font-semibold whitespace-nowrap">ParkALot</span>
@@ -26,12 +26,12 @@ const Navbar = () => {
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
                             </svg>
                         </button>
-                        <div className={(!showNav ? 'hidden' : '') + " w-full md:block md:w-auto"} id="navbar-default">
+                        <div className={(!showNav ? 'hidden' : '') + " bg-white md:relative absolute z-10 md:top-auto top-[80px] left-0 w-full md:block md:w-auto"} id="navbar-default">
                             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
                                 {navigation && navigation.map((item, index) => {
                                     return (
                                         <li key={index}>
-                                            <Link to={'/'} className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-main md:hover:bg-transparent md:border-0 md:p-0">{item.name}</Link>
+                                            <Link to={item.href} className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-main md:hover:bg-transparent md:border-0 md:p-0">{item.name}</Link>
                                         </li>
                                     )
                                 })}

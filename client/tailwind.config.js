@@ -7,7 +7,8 @@ export default {
     theme: {
         extend: {
             colors: {
-                'main': '#16a34a'
+                'main': '#16a34a',
+                'second': '#0f172a'
             },
         },
         plugins: [],
