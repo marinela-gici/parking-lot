@@ -9,7 +9,7 @@ const CreateParkingLot = () => {
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
   const [spots, setSpots] = useState('')
-  const [prices, setPrices] = useState('')
+  const [price, setPrice] = useState('')
   const [validation, setValidation] = useState({})
   const [searchLocations, setSearchLocations] = useState([])
   const [search, setSearch] = useState('')
@@ -25,7 +25,7 @@ const CreateParkingLot = () => {
       latitude,
       longitude,
       spots,
-      prices,
+      price,
     }, { withCredentials: true }).then(res => {
       console.log(res.data)
       navigate('/dashboard/parking-lots')
@@ -107,12 +107,12 @@ const CreateParkingLot = () => {
                     return (
                       <p key={index} onMouseDown={(e) => {
                         e.preventDefault()
-                        setCity(searchLocation.city)
                         setAddress(searchLocation.street)
                         setSearch(searchLocation.street)
                         setLatitude(searchLocation.lat)
                         setLongitude(searchLocation.lon)
                         setShowSearchBar(false)
+                        setCity(searchLocation.city ?? searchLocation.county)
                       }
                       }
                          className="cursor-pointer dark:hover:bg-emerald-800 hover:text-white hover:bg-emerald-800 bg-slate-200 dark:bg-slate-700 w-full pl-3 py-3 rounded-md my-3">
@@ -145,6 +145,7 @@ const CreateParkingLot = () => {
             <input
               type="number"
               id="spots"
+              min='1'
               value={spots}
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-main appearance-none focus:outline-none focus:ring-0 focus:border-main peer"
               placeholder=" "
@@ -166,22 +167,23 @@ const CreateParkingLot = () => {
           </div>
           <div className="relative z-0 w-full my-6 group">
             <input
-              type="text"
-              value={prices}
-              id="prices"
+              type="number"
+              value={price}
+              min='1'
+              id="price"
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-main appearance-none focus:outline-none focus:ring-0 focus:border-main peer"
               placeholder=" "
-              onChange={(e) => setPrices(e.target.value)}
+              onChange={(e) => setPrice(e.target.value)}
             />
             <label
-              htmlFor="prices"
+              htmlFor="price"
               className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-main peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Paking prices
+              Parking price
             </label>
-            {validation.prices ? (
+            {validation.price ? (
               <p className="text-sm text-red-600 font-bold">
-                {validation.prices.message}
+                {validation.price.message}
               </p>
             ) : (
               ''

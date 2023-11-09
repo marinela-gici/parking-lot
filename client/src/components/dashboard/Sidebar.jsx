@@ -1,15 +1,27 @@
 import {React, useEffect, useState} from 'react';
 import logo from '../../assets/logo.png';
-import {Link, useMatch} from "react-router-dom";
+import { Link, useMatch, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const Sidebar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, children } = props;
+  const navigate = useNavigate();
 
   const matchDashboard = useMatch('/dashboard');
   const matchParkingLots = useMatch('dashboard/parking-lots');
   // const matchPosts = useMatch('/user/posts');
+
+  const logout = () => {
+    axios
+    .post('http://localhost:8000/api/logout', {},{withCredentials: true})
+    .then(res => {
+      console.log(res.data);
+      navigate('/');
+    })
+    .catch(err => console.log(err));
+  }
 
   return (
     <>
@@ -27,7 +39,7 @@ const Sidebar = (props) => {
                 </svg>
               </button>
               <Link to='/dashboard' className="flex ml-2 md:mr-24">
-                <img src={logo} className="h-8 mr-3" alt="Logo"/>
+                <img src={logo} className="h-8 mr-3 hidden md:block" alt="Logo"/>
               </Link>
             </div>
             <div className="flex items-center">
@@ -60,27 +72,26 @@ const Sidebar = (props) => {
                       </p>
                       <p className="text-sm font-medium text-white truncate" role="none">
                         {user.email}
-                        test
                       </p>
                     </div>
                     <ul className="py-1" role="none">
                       <li>
-                        <Link to='/dashboard'
+                        <Link to='/dashboard/update-profile'
                               className="block px-4 py-2 text-sm text-white hover:bg-light-blue"
                               role="menuitem">Profile
                         </Link>
                       </li>
                       <li>
-                        <Link to='/dashboard'
+                        <Link to='/dashboard/change-password'
                               className="block px-4 py-2 text-sm text-white hover:bg-light-blue"
                               role="menuitem">Password
                         </Link>
                       </li>
                       <li>
-                        <Link to='/dashboard'
+                        <button onClick={logout}
                               className="block px-4 py-2 text-sm text-white hover:bg-light-blue"
                               role="menuitem">Sign out
-                        </Link>
+                        </button>
                       </li>
                     </ul>
                   </div>

@@ -7,4 +7,6 @@ module.exports = (app) => {
   app.post("/api/logout", UserController.logout);
 
   app.get("/api/dashboard/profile", authenticate, UserController.getOneUser);
+  app.patch("/api/dashboard/profile", authenticate, UserController.updateUser);
+  app.post("/api/dashboard/profile/change-password", authenticate, UserController.updatePassword);
 }

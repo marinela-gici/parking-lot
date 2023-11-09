@@ -9,6 +9,7 @@ const Main = () => {
     return (
         <>
             <HeroSection />
+          <p className="text-5xl my-8 text-center font-bold">All parking lots</p>
             <ViewMap />
             <Faq />
             <Footer />

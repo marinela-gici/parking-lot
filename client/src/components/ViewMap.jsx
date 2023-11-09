@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
-const ViewMap = () => {
+const ViewMap = ({ city }) => {
   const [locations, setLocations] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/parkings').then(res => {
+    axios.get('http://localhost:8000/api/parkings', {
+      params: {
+        city,
+      },
+    }).then(res => {
       console.log(res)
       setLocations(res.data)
-    }).then(err => console.log(err))
-  }, [])
+    }).catch(err => console.log(err))
+  }, [city])
 
   return (
     <>
-      <p className="text-5xl my-8 text-center font-bold">All parking lots</p>
       <div style={{ height: 'auto' }}>
         <MapContainer
-          className="h-[70vh] w-full overflow-hidden"center={[41.3275, 19.8187]} zoom={14} scrollWheelZoom={false}
+          className="h-[70vh] w-full overflow-hidden"
+          center={[41.3275, 19.8187]} zoom={14} scrollWheelZoom={false}
           doubleClickZoom={false}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -29,11 +34,9 @@ const ViewMap = () => {
                       position={[location.latitude, location.longitude]}>
                 <Popup>
                   <div className="flex flex-col items-center">
-                    {/*
-                     @todo Link to details page
-                    */}
-                    <span>{location.name}</span>
-                    <span className="text-xs text-gray-400">{location.address}</span>
+                    <Link className="text-main" to={`/parkings/${location._id}/details`}>{location.name}</Link>
+                    <span
+                      className="text-xs text-gray-400">{location.address}</span>
                   </div>
                 </Popup>
               </Marker>

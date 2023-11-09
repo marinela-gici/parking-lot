@@ -10,6 +10,7 @@ const UserForms = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loginEmail, setLoginEmail] = useState("")
   const [loginPassword, setLoginPassword] = useState("");
+  const [remember, setRemember] = useState(false)
   const [loginValidation, setLoginValidaton] = useState("")
   const [validation, setValidation] = useState({})
   const navigate = useNavigate()
@@ -37,7 +38,8 @@ const UserForms = () => {
     axios
       .post('http://localhost:8000/api/login', {
         email: loginEmail,
-      password: loginPassword
+      password: loginPassword,
+      remember
     }, {withCredentials: true})
       .then(res => {
         console.log(res.data);
@@ -211,7 +213,17 @@ const UserForms = () => {
               className="text-sm text-red-600 font-bold">{loginValidation}</p>
             : ''}
 
-
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex items-start">
+              <div className="flex items-center h-5">
+                <input onChange={(e) => setRemember(e.target.checked)} id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" />
+              </div>
+              <div className="ml-3 text-sm">
+                <label htmlFor="remember" className="text-gray-500">Remember me</label>
+              </div>
+            </div>
+            <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+          </div>
           <div className="mt-6">
             <button
               type="submit"

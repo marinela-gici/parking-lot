@@ -1,16 +1,26 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from 'react'
 import logo from '../assets/logo.png';
 import {Link} from "react-router-dom";
+import axios from 'axios'
 
 const Navbar = () => {
     const [showNav, setShowNav] = useState(false);
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        axios
+          .get('http://localhost:8000/api/dashboard/profile', {withCredentials: true})
+          .then(res => {
+              console.log(res.data);
+              setUser(res.data)
+        })
+          .catch(err => console.log(err))
+    }, [])
 
     const navigation = [
         {'name': 'Home', 'href': '/'},
-        {'name': 'Reserve', 'href': '#'},
         {'name': 'Locations', 'href': '/locations'},
-        {'name': 'Prices', 'href': '#'},
-        {'name': 'Login', 'href': '/login'},
+        {'name': (user? 'Dashboard' : 'Login'), 'href': (user ? '/dashboard' : '/login')},
     ]
     return (
         <>

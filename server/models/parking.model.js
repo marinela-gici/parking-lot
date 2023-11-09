@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 const ParkingSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Parking name is required']
+    required: [true, 'Parking name is required'],
   },
   city: {
     type: String,
-    required: [true, 'City is required']
+    required: [true, 'City is required'],
   },
   address: {
     type: String,
@@ -23,13 +23,28 @@ const ParkingSchema = new mongoose.Schema({
   },
   spots: {
     type: Number,
-    required: [true, 'Number of spots is required']
+    required: [true, 'Number of spots is required'],
+    min: [1, "There must be at least one spot."]
   },
-  prices: {
-    type: String,
-    required: [true, 'Price list is required']
+  price: {
+    type: Number,
+    required: [true, 'Price is required'],
+    min: [1, 'Mininimum price must be 1 lek']
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-}, { timestamps: true })
+  reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reservation' }],
+}, {
+  timestamps: true,
+  toObject: {
+    virtuals: true,
+  },
+  toJSON: {
+    virtuals: true,
+  },
+})
+
+ParkingSchema.virtual('freeSpots').get(function () {
+  return this.spots - this.reservations.length
+})
 
 module.exports = mongoose.model('Parking', ParkingSchema)

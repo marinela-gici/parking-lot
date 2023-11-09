@@ -43,14 +43,21 @@ module.exports = {
     if (!correctPassword) {
       return response.status(400).json('Enter a valid email and password')
     }
-    response.cookie('usertoken', getToken(user), {
+
+    let cookieOptions = {
       httpOnly: true,
-    }).json({ msg: 'success' })
+    }
+
+    if (request.body.remember) {
+      cookieOptions.maxAge = 14 * 24 * 3600000 // 2 weeks, in miliseconds
+    }
+
+    response.cookie('usertoken', getToken(user), cookieOptions).json({ msg: 'success' })
   },
 
   logout: (request, response) => {
     response.clearCookie('usertoken')
-    response.status(200)
+    response.json()
   },
 
   getOneUser: (request, response) => {
@@ -62,4 +69,41 @@ module.exports = {
       response.json(err)
     })
   },
+
+  updateUser: (request, response) => {
+    User.findOneAndUpdate({_id: request.user._id}, request.body, {
+      new: true, runValidators: true
+    })
+    .then((updated) => response.json(updated))
+    .catch((err) => response.status(400).json(err));
+  },
+
+  updatePassword: (request, response) => {
+    User.findOne({_id: request.user._id})
+    .then(async (user) => {
+      const correctPassword = await bcrypt.compare(
+        request.body.password,
+        user.password
+      );
+
+      if (!correctPassword) {
+        return response.status(400).json({errors: {password: {message: 'Password is incorrect'}}});
+      }
+
+      user.newPassword = request.body.newPassword;
+      user.confirmNewPassword = request.body.confirmNewPassword;
+      await user.validate()
+      .then(() => {
+        user.password = request.body.newPassword;
+        user.save()
+        .then((updated) => response.json(updated))
+        .catch((err) => response.status(400).json(err));
+      })
+      .catch((err) => response.status(400).json(err))
+    })
+    .catch((err) => {
+      console.log(err);
+      response.status(400).json(err);
+    });
+  }
 }

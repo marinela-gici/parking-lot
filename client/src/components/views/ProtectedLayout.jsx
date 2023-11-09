@@ -3,7 +3,7 @@ import Sidebar from "../dashboard/Sidebar.jsx"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const ProtectedLayout = ({children}) => {
+const ProtectedLayout = ({children, updated}) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const ProtectedLayout = ({children}) => {
       console.log(err);
       navigate('/');
     });
-  }, []);
+  }, [updated]);
   return (
     <>
       {user &&
